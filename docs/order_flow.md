@@ -1,108 +1,241 @@
-# BTS ↔ Shopify integration: Order flow (notes)
+# BTS ↔ Shopify Integration: Order Flow
 
-Formålet er at kunne:
-1) Synkronisere produkter + stock/priser fra BTS
-2) Sende Shopify-ordrer til BTS (dropshipping)
-3) Hente tracking fra BTS og opdatere Shopify
+This document describes the intended integration workflow between BTSWholesaler and Shopify.
 
-## Vigtig note: ingen sandbox
-BTS har ingen sandbox. API-kald til `setCreateOrder` opretter rigtige ordrer.
-BTS anbefaler at teste med:
-- `payment_method = banktransfer`
-så ordren bliver “Pending Payment” og kan annulleres.
+--------------------------------------------------
 
----
+GOAL
 
-# A) Catalog + stock/pris (BTS → Shopify)
+The integration should support:
 
-## 1) Hent katalog
+1. Syncing products, stock, and prices from BTS to Shopify
+2. Sending Shopify orders to BTS for dropshipping
+3. Retrieving tracking information from BTS
+4. Updating Shopify orders with tracking information
+
+--------------------------------------------------
+
+IMPORTANT NOTE: NO SANDBOX
+
+BTS does not provide a sandbox environment.
+
+Any call to:
+
+POST /v1/api/setCreateOrder
+
+creates a real order.
+
+For safer testing BTS recommends:
+
+payment_method = banktransfer
+
+This leaves the order in "Pending Payment" state so it can be cancelled.
+
+--------------------------------------------------
+
+A. PRODUCT CATALOG SYNC (BTS → SHOPIFY)
+
+STEP 1 — FETCH PRODUCT CATALOG
+
 Endpoint:
-- GET `/v1/api/getListProducts`
-Parametre:
-- `page`
-- `page_size`
 
-Returnerer bl.a.:
-- `products[]` (EAN, name, manufacturer, image, categories, price, stock)
-- `pagination` (total_pages, has_next_page, total_products)
+GET /v1/api/getListProducts
 
-## 2) Hent realtime stock/pris for EANs
+Parameters:
+
+page  
+page_size  
+
+Returns:
+
+products[]  
+pagination  
+
+Typical product fields:
+
+ean  
+name  
+manufacturer  
+image  
+categories  
+price  
+stock  
+
+Pagination fields:
+
+total_pages  
+has_next_page  
+total_products  
+
+--------------------------------------------------
+
+STEP 2 — FETCH REALTIME STOCK AND PRICE
+
 Endpoint:
-- GET `/v1/api/getProductStock`
 
-Vigtigt: BTS forventer array-parametre:
-- `product_sku[]=EAN1`
-- `product_sku[]=EAN2`
-- ...
+GET /v1/api/getProductStock
 
-Returnerer pr EAN:
-- `stock`
-- `price`
-- `availability`
-- `last_updated`
+BTS expects array parameters:
 
-Output gemmes lokalt som JSON snapshot i `data/`.
+product_sku[]=EAN1  
+product_sku[]=EAN2  
 
----
+Returns per SKU:
 
-# B) Order flow (Shopify → BTS → tracking tilbage)
+stock  
+price  
+availability  
+last_updated  
 
-## Step 1 — Shipping prices
+The integration merges this data with catalog data and stores a local snapshot.
+
+Current prototype output:
+
+data/bts_snapshot_*.json
+
+--------------------------------------------------
+
+B. ORDER FLOW (SHOPIFY → BTS)
+
+STEP 1 — VALIDATE ORDER
+
+Before creating an order the integration should validate:
+
+destination country is supported  
+requested SKUs exist  
+requested quantities are in stock  
+
+Endpoints used:
+
+GET /v1/api/getCountries  
+GET /v1/api/getProductStock  
+
+--------------------------------------------------
+
+STEP 2 — GET SHIPPING OPTIONS
+
 Endpoint:
-- GET `/v1/api/getShippingPrices`
 
-Parametre (nested):
-- `address[country_code]`
-- `address[postal_code]`
-- `products[0][sku]`
-- `products[0][quantity]`
-- `products[1][sku]`
-- ...
+GET /v1/api/getShippingPrices
 
-Returnerer liste over muligheder, fx:
-- `id`
-- `company_name` (GLS/FedEx)
-- `shipping_cost`
-- `delivery_time`
-- `free_shipping`
+Parameters:
 
-Vi vælger en `shipping_cost_id` (typisk GLS hvis pris er ens).
+address[country_code]  
+address[postal_code]  
 
-## Step 2 — Create order
+products[0][sku]  
+products[0][quantity]  
+products[1][sku]  
+products[1][quantity]  
+
+Returns shipping options such as:
+
+id  
+company_name  
+shipping_cost  
+delivery_time  
+free_shipping  
+
+The integration selects one shipping_cost_id.
+
+--------------------------------------------------
+
+STEP 3 — CREATE BTS ORDER
+
 Endpoint:
-- POST `/v1/api/setCreateOrder`
+
+POST /v1/api/setCreateOrder
+
 Content-Type:
-- `application/x-www-form-urlencoded`
 
-Felter:
-- `payment_method`
-- `shipping_cost_id`
-- `client_name`
-- `address`
-- `postal_code`
-- `city`
-- `country_code`
-- `telephone`
-- `dropshipping=1`
-- `products[i][sku]`
-- `products[i][quantity]`
+application/x-www-form-urlencoded
 
-## Step 3 — Read order (validering)
+Typical fields:
+
+payment_method  
+shipping_cost_id  
+client_name  
+address  
+postal_code  
+city  
+country_code  
+telephone  
+dropshipping=1  
+
+products[i][sku]  
+products[i][quantity]  
+
+--------------------------------------------------
+
+STEP 4 — READ ORDER
+
 Endpoint:
-- GET `/v1/api/getOrder`
-Param:
-- `order_number`
 
-## Step 4 — Tracking
+GET /v1/api/getOrder
+
+Parameter:
+
+order_number
+
+Used to verify order creation and inspect order status.
+
+--------------------------------------------------
+
+STEP 5 — RETRIEVE TRACKING
+
 Endpoint:
-- GET `/v1/api/getTrackings`
-Param:
-- `order_number`
 
-Tracking kan først være tilgængelig efter BTS har afsendt.
+GET /v1/api/getTrackings
 
----
+Parameter style:
 
-# Lokal status (prototype)
-- `bts_catalog_sync.py` kan hente katalog + realtime stock/pris og gemme snapshot.
-- `bts_order_dryrun.py` kan hente shipping options og bygge korrekt payload til `setCreateOrder` uden at oprette ordre.
+order_number[]=...
+
+Tracking information becomes available after BTS ships the order.
+
+--------------------------------------------------
+
+INTENDED END-TO-END FLOW
+
+PRODUCT SYNC
+
+BTS getListProducts + getProductStock  
+→ Python sync script  
+→ Shopify products and inventory
+
+ORDER SYNC
+
+Shopify order  
+→ Python integration  
+→ BTS getShippingPrices  
+→ BTS setCreateOrder
+
+TRACKING SYNC
+
+BTS getTrackings  
+→ Python integration  
+→ Shopify fulfillment update
+
+--------------------------------------------------
+
+CURRENT PROTOTYPE STATUS
+
+Implemented:
+
+BTS API client  
+catalog sync script  
+stock batching  
+order dry-run script  
+country validation  
+stock validation  
+shipping lookup  
+order payload generation  
+order deduplication  
+tracking lookup
+
+Not implemented yet:
+
+Shopify Admin API integration  
+Shopify product creation  
+Shopify order ingestion  
+Shopify fulfillment tracking updates
