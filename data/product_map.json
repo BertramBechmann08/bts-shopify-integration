@@ -1,0 +1,367 @@
+{
+  "3760269849303": {
+    "shopify_product_id": 123,
+    "shopify_variant_id": 456,
+    "shopify_inventory_item_id": 789,
+    "last_synced_at": "2026-03-09T12:00:00Z"
+  },
+  "products": {
+    "3760269849303": {
+      "shopify_product_id": 10692715807047,
+      "shopify_variant_id": 53482070212935,
+      "shopify_inventory_item_id": 55066034569543,
+      "created_at": "2026-03-09T12:01:03.053860+00:00",
+      "updated_at": "2026-03-09T21:20:33.080985+00:00"
+    },
+    "3760269849310": {
+      "shopify_product_id": 10692715839815,
+      "shopify_variant_id": 53482070540615,
+      "shopify_inventory_item_id": 55066034897223,
+      "created_at": "2026-03-09T12:01:03.409959+00:00",
+      "updated_at": "2026-03-09T21:20:33.890905+00:00"
+    },
+    "3760269849327": {
+      "shopify_product_id": 10692715872583,
+      "shopify_variant_id": 53482070573383,
+      "shopify_inventory_item_id": 55066034929991,
+      "created_at": "2026-03-09T12:01:03.793672+00:00",
+      "updated_at": "2026-03-09T21:20:34.739665+00:00"
+    },
+    "3760269849549": {
+      "shopify_product_id": 10692932141383,
+      "shopify_variant_id": 53482777805127,
+      "shopify_inventory_item_id": 55066749993287,
+      "created_at": "2026-03-09T13:43:07.478345+00:00",
+      "updated_at": "2026-03-09T21:20:39.826308+00:00"
+    },
+    "3760269849556": {
+      "shopify_product_id": 10692932272455,
+      "shopify_variant_id": 53482778689863,
+      "shopify_inventory_item_id": 55066750878023,
+      "created_at": "2026-03-09T13:43:09.360936+00:00",
+      "updated_at": "2026-03-09T21:20:40.625098+00:00"
+    },
+    "3760269849341": {
+      "shopify_product_id": 10692932403527,
+      "shopify_variant_id": 53482779050311,
+      "shopify_inventory_item_id": 55066751336775,
+      "created_at": "2026-03-09T13:43:11.767767+00:00",
+      "updated_at": "2026-03-09T20:37:41.816273+00:00"
+    },
+    "3760269840188": {
+      "shopify_product_id": 10692932600135,
+      "shopify_variant_id": 53482779574599,
+      "shopify_inventory_item_id": 55066751762759,
+      "created_at": "2026-03-09T13:43:13.796186+00:00",
+      "updated_at": "2026-03-09T20:37:44.672406+00:00"
+    },
+    "3760269840355": {
+      "shopify_product_id": 10692932698439,
+      "shopify_variant_id": 53482779672903,
+      "shopify_inventory_item_id": 55066751861063,
+      "created_at": "2026-03-09T13:43:15.780846+00:00",
+      "updated_at": "2026-03-09T20:37:45.838549+00:00"
+    },
+    "3760269841093": {
+      "shopify_product_id": 10692932829511,
+      "shopify_variant_id": 53482780197191,
+      "shopify_inventory_item_id": 55066752385351,
+      "created_at": "2026-03-09T13:43:17.806450+00:00",
+      "updated_at": "2026-03-09T20:38:34.916552+00:00"
+    },
+    "3760269849037": {
+      "shopify_product_id": 10692932960583,
+      "shopify_variant_id": 53482780393799,
+      "shopify_inventory_item_id": 55066752581959,
+      "created_at": "2026-03-09T13:43:19.868129+00:00",
+      "updated_at": "2026-03-09T13:43:19.868159+00:00"
+    },
+    "3386460076265": {
+      "shopify_product_id": 10693935923527,
+      "shopify_variant_id": 53486506901831,
+      "shopify_inventory_item_id": 55070515953991,
+      "created_at": "2026-03-09T20:37:27.301110+00:00",
+      "updated_at": "2026-03-09T21:20:35.580490+00:00"
+    },
+    "3386460076272": {
+      "shopify_product_id": 10693936021831,
+      "shopify_variant_id": 53486507000135,
+      "shopify_inventory_item_id": 55070516052295,
+      "created_at": "2026-03-09T20:37:29.235826+00:00",
+      "updated_at": "2026-03-09T21:20:36.539445+00:00"
+    },
+    "3386460082112": {
+      "shopify_product_id": 10693936218439,
+      "shopify_variant_id": 53486507196743,
+      "shopify_inventory_item_id": 55070516248903,
+      "created_at": "2026-03-09T20:37:31.530538+00:00",
+      "updated_at": "2026-03-09T21:20:37.469002+00:00"
+    },
+    "3386460076364": {
+      "shopify_product_id": 10693936316743,
+      "shopify_variant_id": 53486507295047,
+      "shopify_inventory_item_id": 55070516347207,
+      "created_at": "2026-03-09T20:37:33.741805+00:00",
+      "updated_at": "2026-03-09T21:20:38.290764+00:00"
+    },
+    "3386460076340": {
+      "shopify_product_id": 10693936415047,
+      "shopify_variant_id": 53486507426119,
+      "shopify_inventory_item_id": 55070516478279,
+      "created_at": "2026-03-09T20:37:35.993884+00:00",
+      "updated_at": "2026-03-09T21:20:39.048013+00:00"
+    },
+    "8011003901630": {
+      "shopify_product_id": 10693936480583,
+      "shopify_variant_id": 53486507491655,
+      "shopify_inventory_item_id": 55070516543815,
+      "created_at": "2026-03-09T20:37:40.602773+00:00",
+      "updated_at": "2026-03-09T20:37:40.602804+00:00"
+    },
+    "3386460078597": {
+      "shopify_product_id": 10693936546119,
+      "shopify_variant_id": 53486507589959,
+      "shopify_inventory_item_id": 55070516642119,
+      "created_at": "2026-03-09T20:37:43.739459+00:00",
+      "updated_at": "2026-03-09T20:37:43.739568+00:00"
+    },
+    "3386460124232": {
+      "shopify_product_id": 10693936775495,
+      "shopify_variant_id": 53486508310855,
+      "shopify_inventory_item_id": 55070517363015,
+      "created_at": "2026-03-09T20:37:48.896553+00:00",
+      "updated_at": "2026-03-09T20:37:48.896583+00:00"
+    },
+    "3386460124256": {
+      "shopify_product_id": 10693936939335,
+      "shopify_variant_id": 53486509162823,
+      "shopify_inventory_item_id": 55070518214983,
+      "created_at": "2026-03-09T20:37:50.859371+00:00",
+      "updated_at": "2026-03-09T20:37:50.859385+00:00"
+    },
+    "3386460124249": {
+      "shopify_product_id": 10693937070407,
+      "shopify_variant_id": 53486509621575,
+      "shopify_inventory_item_id": 55070518673735,
+      "created_at": "2026-03-09T20:37:52.893320+00:00",
+      "updated_at": "2026-03-09T20:37:52.893386+00:00"
+    },
+    "3386460130868": {
+      "shopify_product_id": 10693937201479,
+      "shopify_variant_id": 53486509982023,
+      "shopify_inventory_item_id": 55070519034183,
+      "created_at": "2026-03-09T20:37:54.887328+00:00",
+      "updated_at": "2026-03-09T20:37:54.887380+00:00"
+    },
+    "3386460130875": {
+      "shopify_product_id": 10693937299783,
+      "shopify_variant_id": 53486510080327,
+      "shopify_inventory_item_id": 55070519132487,
+      "created_at": "2026-03-09T20:37:56.777729+00:00",
+      "updated_at": "2026-03-09T20:37:56.777769+00:00"
+    },
+    "3386460081016": {
+      "shopify_product_id": 10693937430855,
+      "shopify_variant_id": 53486510244167,
+      "shopify_inventory_item_id": 55070519296327,
+      "created_at": "2026-03-09T20:37:58.725816+00:00",
+      "updated_at": "2026-03-09T20:37:58.725836+00:00"
+    },
+    "3386460081023": {
+      "shopify_product_id": 10693937529159,
+      "shopify_variant_id": 53486510342471,
+      "shopify_inventory_item_id": 55070519394631,
+      "created_at": "2026-03-09T20:38:00.671150+00:00",
+      "updated_at": "2026-03-09T20:38:00.671189+00:00"
+    },
+    "3386460081030": {
+      "shopify_product_id": 10693937660231,
+      "shopify_variant_id": 53486510440775,
+      "shopify_inventory_item_id": 55070519492935,
+      "created_at": "2026-03-09T20:38:02.682878+00:00",
+      "updated_at": "2026-03-09T20:38:02.682933+00:00"
+    },
+    "3386460077002": {
+      "shopify_product_id": 10693938184519,
+      "shopify_variant_id": 53486510932295,
+      "shopify_inventory_item_id": 55070519984455,
+      "created_at": "2026-03-09T20:38:04.976752+00:00",
+      "updated_at": "2026-03-09T20:38:04.976799+00:00"
+    },
+    "3386460078573": {
+      "shopify_product_id": 10693938413895,
+      "shopify_variant_id": 53486511718727,
+      "shopify_inventory_item_id": 55070520770887,
+      "created_at": "2026-03-09T20:38:07.224695+00:00",
+      "updated_at": "2026-03-09T20:38:07.224709+00:00"
+    },
+    "8018365260757": {
+      "shopify_product_id": 10693938512199,
+      "shopify_variant_id": 53486511849799,
+      "shopify_inventory_item_id": 55070520901959,
+      "created_at": "2026-03-09T20:38:09.244222+00:00",
+      "updated_at": "2026-03-09T20:38:09.244249+00:00"
+    },
+    "3386460156967": {
+      "shopify_product_id": 10693938610503,
+      "shopify_variant_id": 53486512111943,
+      "shopify_inventory_item_id": 55070521164103,
+      "created_at": "2026-03-09T20:38:11.408472+00:00",
+      "updated_at": "2026-03-09T20:38:11.408508+00:00"
+    },
+    "3386460078542": {
+      "shopify_product_id": 10693938774343,
+      "shopify_variant_id": 53486512636231,
+      "shopify_inventory_item_id": 55070521688391,
+      "created_at": "2026-03-09T20:38:13.471581+00:00",
+      "updated_at": "2026-03-09T20:38:13.471595+00:00"
+    },
+    "8011003861224": {
+      "shopify_product_id": 10693938905415,
+      "shopify_variant_id": 53486513193287,
+      "shopify_inventory_item_id": 55070522245447,
+      "created_at": "2026-03-09T20:38:15.564860+00:00",
+      "updated_at": "2026-03-09T20:38:15.564899+00:00"
+    },
+    "8011003861903": {
+      "shopify_product_id": 10693939036487,
+      "shopify_variant_id": 53486514110791,
+      "shopify_inventory_item_id": 55070523162951,
+      "created_at": "2026-03-09T20:38:17.529710+00:00",
+      "updated_at": "2026-03-09T20:38:17.529744+00:00"
+    },
+    "8011003861910": {
+      "shopify_product_id": 10693939134791,
+      "shopify_variant_id": 53486515880263,
+      "shopify_inventory_item_id": 55070524932423,
+      "created_at": "2026-03-09T20:38:19.925078+00:00",
+      "updated_at": "2026-03-09T20:38:19.925132+00:00"
+    },
+    "8011003900008": {
+      "shopify_product_id": 10693939233095,
+      "shopify_variant_id": 53486515978567,
+      "shopify_inventory_item_id": 55070525030727,
+      "created_at": "2026-03-09T20:38:21.861009+00:00",
+      "updated_at": "2026-03-09T20:38:21.861058+00:00"
+    },
+    "8011003818112": {
+      "shopify_product_id": 10693939396935,
+      "shopify_variant_id": 53486516109639,
+      "shopify_inventory_item_id": 55070525161799,
+      "created_at": "2026-03-09T20:38:23.862192+00:00",
+      "updated_at": "2026-03-09T20:38:23.862222+00:00"
+    },
+    "8011003818174": {
+      "shopify_product_id": 10693939495239,
+      "shopify_variant_id": 53486516207943,
+      "shopify_inventory_item_id": 55070525260103,
+      "created_at": "2026-03-09T20:38:25.761114+00:00",
+      "updated_at": "2026-03-09T20:38:25.761159+00:00"
+    },
+    "8011003819423": {
+      "shopify_product_id": 10693939593543,
+      "shopify_variant_id": 53486516437319,
+      "shopify_inventory_item_id": 55070525489479,
+      "created_at": "2026-03-09T20:38:27.705803+00:00",
+      "updated_at": "2026-03-09T20:38:27.705838+00:00"
+    },
+    "3386460130141": {
+      "shopify_product_id": 10693939724615,
+      "shopify_variant_id": 53486516568391,
+      "shopify_inventory_item_id": 55070525620551,
+      "created_at": "2026-03-09T20:38:29.641169+00:00",
+      "updated_at": "2026-03-09T20:38:29.641183+00:00"
+    },
+    "3386460146883": {
+      "shopify_product_id": 10693939855687,
+      "shopify_variant_id": 53486516732231,
+      "shopify_inventory_item_id": 55070525784391,
+      "created_at": "2026-03-09T20:38:31.700756+00:00",
+      "updated_at": "2026-03-09T20:38:31.700795+00:00"
+    },
+    "3386460146777": {
+      "shopify_product_id": 10693939986759,
+      "shopify_variant_id": 53486516863303,
+      "shopify_inventory_item_id": 55070525948231,
+      "created_at": "2026-03-09T20:38:34.022882+00:00",
+      "updated_at": "2026-03-09T20:38:34.022928+00:00"
+    },
+    "8018365250468": {
+      "shopify_product_id": 10693940150599,
+      "shopify_variant_id": 53486517092679,
+      "shopify_inventory_item_id": 55070526144839,
+      "created_at": "2026-03-09T20:38:36.820452+00:00",
+      "updated_at": "2026-03-09T20:38:36.820488+00:00"
+    },
+    "3386460152297": {
+      "shopify_product_id": 10693940216135,
+      "shopify_variant_id": 53486517158215,
+      "shopify_inventory_item_id": 55070526210375,
+      "created_at": "2026-03-09T20:38:38.971449+00:00",
+      "updated_at": "2026-03-09T20:38:38.971490+00:00"
+    },
+    "3386460153867": {
+      "shopify_product_id": 10693940314439,
+      "shopify_variant_id": 53486517256519,
+      "shopify_inventory_item_id": 55070526308679,
+      "created_at": "2026-03-09T20:38:41.003071+00:00",
+      "updated_at": "2026-03-09T20:38:41.003098+00:00"
+    },
+    "3386460153874": {
+      "shopify_product_id": 10693940412743,
+      "shopify_variant_id": 53486517387591,
+      "shopify_inventory_item_id": 55070526439751,
+      "created_at": "2026-03-09T20:38:42.918721+00:00",
+      "updated_at": "2026-03-09T20:38:42.918738+00:00"
+    },
+    "8011003803132": {
+      "shopify_product_id": 10693940478279,
+      "shopify_variant_id": 53486517453127,
+      "shopify_inventory_item_id": 55070526505287,
+      "created_at": "2026-03-09T20:38:44.956573+00:00",
+      "updated_at": "2026-03-09T20:38:44.956626+00:00"
+    },
+    "8011003993802": {
+      "shopify_product_id": 10693940576583,
+      "shopify_variant_id": 53486517551431,
+      "shopify_inventory_item_id": 55070526636359,
+      "created_at": "2026-03-09T20:38:47.061120+00:00",
+      "updated_at": "2026-03-09T20:38:47.061162+00:00"
+    },
+    "8011003993819": {
+      "shopify_product_id": 10693940707655,
+      "shopify_variant_id": 53486517682503,
+      "shopify_inventory_item_id": 55070526734663,
+      "created_at": "2026-03-09T20:38:49.036191+00:00",
+      "updated_at": "2026-03-09T20:38:49.036242+00:00"
+    },
+    "8011003993826": {
+      "shopify_product_id": 10693940838727,
+      "shopify_variant_id": 53486517813575,
+      "shopify_inventory_item_id": 55070526865735,
+      "created_at": "2026-03-09T20:38:51.464266+00:00",
+      "updated_at": "2026-03-09T20:38:51.464313+00:00"
+    },
+    "8018365500020": {
+      "shopify_product_id": 10693940969799,
+      "shopify_variant_id": 53486517944647,
+      "shopify_inventory_item_id": 55070526996807,
+      "created_at": "2026-03-09T20:38:53.450037+00:00",
+      "updated_at": "2026-03-09T20:38:53.450075+00:00"
+    },
+    "8018365500037": {
+      "shopify_product_id": 10693941068103,
+      "shopify_variant_id": 53486518042951,
+      "shopify_inventory_item_id": 55070527095111,
+      "created_at": "2026-03-09T20:38:55.559822+00:00",
+      "updated_at": "2026-03-09T20:38:55.559852+00:00"
+    },
+    "8011003993833": {
+      "shopify_product_id": 10693941199175,
+      "shopify_variant_id": 53486518174023,
+      "shopify_inventory_item_id": 55070527226183,
+      "created_at": "2026-03-09T20:38:57.609062+00:00",
+      "updated_at": "2026-03-09T20:38:57.609073+00:00"
+    }
+  }
+}

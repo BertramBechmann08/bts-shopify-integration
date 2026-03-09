@@ -3,8 +3,8 @@ import json
 import logging
 from typing import List
 
-from bts_client import BTSClient
-from bts_store import JSONStore
+from bts.client import BTSClient
+from bts.store import JSONStore
 
 
 def main() -> None:

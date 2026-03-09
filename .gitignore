@@ -10,11 +10,21 @@ __pycache__/
 
 # Virtual environments
 venv/
-.env/
 
 # Mac
 .DS_Store
 
-# Data output
-data/
+# IDE
+.vscode/
+
+# Generated data
+data/*.json
+data/*.xlsx
+data/*.csv
 snapshots/
+
+# Keep important config
+!data/allowed_brands.txt
+!data/allowed_eans.txt
+!data/product_map.json
+!data/order_map.json
