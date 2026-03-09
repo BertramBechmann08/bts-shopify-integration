@@ -182,6 +182,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--allow-no-image", action="store_true", help="Allow products without images")
     parser.add_argument("--allow-no-ean", action="store_true", help="Allow products without EAN")
     parser.add_argument("--brand-file", type=str, default="", help="Optional file containing one allowed brand per line")
+    parser.add_argument("--mapped-only", action="store_true", help="Only sync products already present in product_map.json")
 
     return parser.parse_args()
 
@@ -198,13 +199,20 @@ def main() -> None:
     client = ShopifyClient.from_env()
     product_store = JSONProductStore(args.product_map)
 
+    mapped_eans: Optional[Set[str]] = None
+    if args.mapped_only:
+        mapped_eans = set(product_store.list_eans())
+
     allowed_eans: Optional[Set[str]] = None
+
     if args.ean_file:
-        ean_file_path = Path(args.ean_file)
-        if not ean_file_path.exists():
-            raise FileNotFoundError(f"EAN allowlist file not found: {ean_file_path}")
-        allowed_eans = load_ean_allowlist(str(ean_file_path))
-        logging.info("Loaded %s allowed EANs from %s", len(allowed_eans), ean_file_path)
+        allowed_eans = load_ean_allowlist(args.ean_file)
+
+    if mapped_eans is not None:
+        if allowed_eans is None:
+            allowed_eans = mapped_eans
+        else:
+            allowed_eans = allowed_eans.intersection(mapped_eans)
 
     allowed_brands: Optional[Set[str]] = None
     if args.brand_file:

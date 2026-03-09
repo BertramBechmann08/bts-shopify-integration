@@ -1,4 +1,5 @@
 import os
+import time
 from typing import Any, Dict, Optional
 
 import requests
@@ -48,11 +49,48 @@ class ShopifyClient:
 
     def _url(self, path: str) -> str:
         return f"{self.base_url}/{path.lstrip('/')}"
+    
+    def _request_with_retry(self, method: Any, url: str, **kwargs: Any) -> requests.Response:
+        last_response: Optional[requests.Response] = None
+
+        for attempt in range(5):
+            try:
+                response = method(url, timeout=self.timeout_seconds, **kwargs)
+            except requests.RequestException as e:
+                if attempt == 4:
+                    raise ShopifyHTTPError(f"Request {url} failed after retries: {e}") from e
+                time.sleep(1.5 * (attempt + 1))
+                continue
+
+            last_response = response
+
+            if response.status_code == 429:
+                retry_after = response.headers.get("Retry-After")
+                try:
+                    wait_seconds = float(retry_after) if retry_after else 2.0 * (attempt + 1)
+                except ValueError:
+                    wait_seconds = 2.0 * (attempt + 1)
+
+                time.sleep(wait_seconds)
+                continue
+
+            if 500 <= response.status_code < 600:
+                if attempt == 4:
+                    break
+                time.sleep(1.5 * (attempt + 1))
+                continue
+
+            return response
+
+        if last_response is None:
+            raise ShopifyHTTPError(f"Request {url} failed without a response")
+
+        return last_response
 
     def get(self, path: str, params: Optional[Dict[str, Any]] = None) -> Any:
         url = self._url(path)
         try:
-            r = self.session.get(url, params=params, timeout=self.timeout_seconds)
+            r = self._request_with_retry(self.session.get, url, params=params)
         except requests.RequestException as e:
             raise ShopifyHTTPError(f"GET {url} failed: {e}") from e
 
@@ -64,7 +102,7 @@ class ShopifyClient:
     def post(self, path: str, data: Dict[str, Any]) -> Any:
         url = self._url(path)
         try:
-            r = self.session.post(url, json=data, timeout=self.timeout_seconds)
+            r = self._request_with_retry(self.session.post, url, json=data)
         except requests.RequestException as e:
             raise ShopifyHTTPError(f"POST {url} failed: {e}") from e
 
@@ -76,7 +114,7 @@ class ShopifyClient:
     def put(self, path: str, data: Dict[str, Any]) -> Any:
         url = self._url(path)
         try:
-            r = self.session.put(url, json=data, timeout=self.timeout_seconds)
+            r = self._request_with_retry(self.session.put, url, json=data)
         except requests.RequestException as e:
             raise ShopifyHTTPError(f"PUT {url} failed: {e}") from e
 

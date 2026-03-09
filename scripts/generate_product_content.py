@@ -253,6 +253,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--brand", type=str, default="")
     parser.add_argument("--ean-file", type=str, default="")
     parser.add_argument("--limit", type=int, default=0, help="Number of products to generate content for (0 = no limit)")
+    parser.add_argument("--mapped-only", action="store_true")
     return parser.parse_args()
 
 
@@ -262,9 +263,20 @@ def main() -> None:
     snapshot = load_snapshot(args.snapshot)
     product_store = JSONProductStore(args.product_map)
 
+    mapped_eans: Optional[Set[str]] = None
+    if args.mapped_only:
+        mapped_eans = set(product_store.list_eans())
+
     allowed_eans: Optional[Set[str]] = None
+
     if args.ean_file:
         allowed_eans = load_ean_allowlist(args.ean_file)
+
+    if mapped_eans is not None:
+        if allowed_eans is None:
+            allowed_eans = mapped_eans
+        else:
+            allowed_eans = allowed_eans.intersection(mapped_eans)
 
     subset = select_subset(
         products=snapshot,

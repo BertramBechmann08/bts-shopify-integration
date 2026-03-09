@@ -38,7 +38,7 @@ def build_body_html(description_da: str, bullets_da: List[str]) -> str:
 
 def get_approved_payload(row: Dict[str, Any]) -> Dict[str, Any] | None:
     review = row.get("review", {})
-    generated = row.get("generated", {})
+    generated = row.get("ai_rewrite") or row.get("generated", {})
 
     if not isinstance(review, dict) or review.get("status") != "approved":
         return None

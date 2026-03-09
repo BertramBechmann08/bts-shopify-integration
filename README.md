@@ -1,38 +1,49 @@
 # BTS ↔ Shopify Integration Prototype
 
-This repository contains a Python prototype integration with the BTSWholesaler API for a Shopify-based e-commerce setup.
+This repository contains a Python integration prototype between BTSWholesaler and Shopify.
 
 The goal of the integration is to support a dropshipping workflow where:
 
 1. BTS products are synced to Shopify
-2. Shopify orders are forwarded to BTS
-3. BTS ships the order directly to the customer
-4. Tracking information is returned to Shopify
+2. Shopify prices and stock are updated from BTS
+3. Shopify orders can be forwarded to BTS
+4. BTS ships the order directly to the customer
+5. Tracking information can later be returned to Shopify
 
 --------------------------------------------------
 
-CURRENT SCOPE
+CURRENT STATUS
 
-The current repository focuses on the BTS side of the integration.
+The catalog side of the integration is working.
 
 Implemented:
 
 - BTS API client
-- Catalog sync
-- Realtime stock batching
-- Order validation
-- Shipping lookup
-- Safe order dry-run flow
-- Optional real order creation (--commit)
-- Local order deduplication
-- Tracking lookup
-
-Not implemented yet:
-
-- Shopify product creation
+- BTS catalog snapshot sync
+- realtime stock and price enrichment
+- Shopify product create/update sync
 - Shopify inventory sync
-- Shopify order ingestion
-- Shopify fulfillment tracking updates
+- local Shopify product mapping by EAN
+- title normalization
+- rule-based product content generation
+- content apply flow to Shopify
+- BTS order validation and creation prototype
+- BTS order mapping and tracking lookup
+- Shopify API rate-limit handling
+- manual demo script
+
+Partially implemented / foundation exists:
+
+- Shopify → BTS order handoff
+- BTS tracking → Shopify fulfillment update
+
+Not yet automated:
+
+- scheduled sync jobs
+- webhook-driven order automation
+- automatic fulfillment / tracking updates in production
+
+The system currently runs manually via scripts.
 
 --------------------------------------------------
 
@@ -40,79 +51,52 @@ PROJECT STRUCTURE
 
 Stack/
 
-bts_client.py  
-Reusable BTS API client
+bts/
+    client.py
+    store.py
 
-bts_catalog_sync.py  
-Fetches the BTS catalog and realtime stock data and saves a local snapshot
+catalog/
+    filters.py
+    io.py
+    normalize.py
+    pricing.py
+    product_data.py
 
-bts_order_dryrun.py  
-Demonstrates the BTS order creation workflow (dry-run by default)
-
-bts_tracking_check.py  
-Checks tracking information for created BTS orders
-
-bts_store.py  
-Minimal local persistence for order mappings
-
-README.md  
-Project documentation
-
-requirements.txt  
-Python dependencies
-
-.env  
-Local environment variables
-
-.env.example  
-Example environment configuration
-
-.gitignore  
-Git ignore rules
-
-data/
-
-test_order.json  
-Example order input
-
-order_map.json  
-Mapping between external order IDs and BTS order numbers
-
-bts_snapshot_*.json  
-Catalog snapshots
-
-docs/
-
-order_flow.md  
-Documentation describing the intended integration flow
+shopify/
+    client.py
+    store.py
+    order_store.py
 
 scripts/
+    apply_product_content.py
+    bts_catalog_sync.py
+    bts_order_dryrun.py
+    bts_tracking_check.py
+    export_snapshot_to_excel.py
+    generate_product_content.py
+    rewrite_product_content_ai.py
+    shopify_inventory_sync.py
+    shopify_order_to_bts.py
+    shopify_product_sync.py
+    shopify_test.py
+    shopify_tracking_update.py
 
-run_demo.sh  
-Helper script to run a quick prototype demonstration
+data/
+    product_map.json
+    order_map.json
+    content_review.json
+    content_review_existing.json
+    bts_snapshot_*.json
 
---------------------------------------------------
+docs/
+    order_flow.md
+    content_flow.md
 
-BTS API ENDPOINTS USED
-
-Catalog and stock:
-
-GET /v1/api/getListProducts  
-GET /v1/api/getProductChanges  
-GET /v1/api/getProductStock  
-GET /v1/api/getFeedStatus  
-
-Orders and shipping:
-
-GET /v1/api/getCountries  
-GET /v1/api/getShippingPrices  
-POST /v1/api/setCreateOrder  
-GET /v1/api/getOrder  
-GET /v1/api/getTrackings  
-
-Authentication:
-
-Authorization: Bearer <BTS_API_TOKEN>
+.env
+.env.example
+requirements.txt
+README.md
+.gitignore
 
 --------------------------------------------------
 
@@ -125,19 +109,25 @@ pip install -r requirements.txt
 Create a .env file:
 
 BTS_API_TOKEN=your_bts_token_here
+SHOPIFY_SHOP=your-store.myshopify.com
+SHOPIFY_ACCESS_TOKEN=your_shopify_admin_token
+OPENAI_API_KEY=optional_for_ai_rewrite
 
 Optional environment variables:
 
-BTS_API_BASE_URL=https://api.btswholesaler.com/v1/api  
+BTS_API_BASE_URL=https://api.btswholesaler.com/v1/api
 BTS_HTTP_TIMEOUT_SECONDS=60
+OPENAI_MODEL=gpt-5.4
 
 --------------------------------------------------
 
-CATALOG SYNC
+BTS CATALOG SYNC
+
+Fetch the BTS catalog and realtime stock/price data.
 
 Run:
 
-python3 bts_catalog_sync.py
+python3 scripts/bts_catalog_sync.py
 
 What it does:
 
@@ -149,58 +139,139 @@ What it does:
 
 Example output:
 
-data/bts_snapshot_20260305_210000.json
+data/bts_snapshot_20260309_165523.json
 
 --------------------------------------------------
 
-ORDER FLOW PROTOTYPE
+SHOPIFY PRODUCT SYNC
+
+Creates or updates Shopify products from the BTS snapshot.
 
 Run:
 
-python3 bts_order_dryrun.py --order-file data/test_order.json
+python3 scripts/shopify_product_sync.py \
+  --snapshot data/bts_snapshot_20260309_165523.json \
+  --product-map data/product_map.json \
+  --mapped-only \
+  --commit
 
 What it does:
 
-1. Loads order data from JSON
+- matches products by EAN
+- creates Shopify products if needed
+- updates title, vendor, price and SKU
+- stores Shopify IDs in product_map.json
+
+--------------------------------------------------
+
+SHOPIFY INVENTORY SYNC
+
+Updates Shopify inventory levels based on BTS stock.
+
+Run:
+
+python3 scripts/shopify_inventory_sync.py \
+  --snapshot data/bts_snapshot_20260309_165523.json \
+  --product-map data/product_map.json \
+  --commit
+
+What it does:
+
+- finds Shopify inventory items from the mapping
+- updates stock levels
+- prevents overselling if stock is zero
+
+--------------------------------------------------
+
+PRODUCT CONTENT FLOW
+
+Product titles and descriptions are generated and reviewed locally before being applied.
+
+Step 1 – Generate base content:
+
+python3 scripts/generate_product_content.py
+
+Step 2 – Review content in:
+
+data/content_review.json
+
+Step 3 – Apply approved content to Shopify:
+
+python3 scripts/apply_product_content.py \
+  --review-file data/content_review_existing.json \
+  --commit
+
+--------------------------------------------------
+
+AI CONTENT REWRITE (OPTIONAL)
+
+AI can optionally improve generated content.
+
+Run:
+
+python3 scripts/rewrite_product_content_ai.py \
+  --review-file data/content_review_existing.json \
+  --out data/content_review_existing_ai.json
+
+AI rewriting is optional and not required for normal operation.
+
+--------------------------------------------------
+
+ORDER FLOW
+
+Real order:
+
+python3 scripts/bts_order_dryrun.py \
+  --order-file data/test_order.json \
+  --commit
+
+What it does:
+
+1. Loads order data
 2. Validates destination country
-3. Validates stock availability
+3. Checks stock availability
 4. Requests shipping options
-5. Chooses a shipping method
-6. Builds a valid setCreateOrder payload
-7. Prints the payload without creating a real order
-
-Create a real BTS order:
-
-python3 bts_order_dryrun.py --order-file data/test_order.json --commit
-
-Important:
-
-The script uses payment_method=banktransfer for safer testing.  
-BTS has no sandbox environment.  
-Real orders are only created when using --commit.
+5. Builds a valid setCreateOrder payload
+6. Sends the order to BTS
 
 --------------------------------------------------
 
 ORDER DEDUPLICATION
 
-The prototype stores a mapping in:
+Orders are stored in:
 
 data/order_map.json
 
 Purpose:
 
 - prevent duplicate BTS order creation
-- support future mapping between Shopify order IDs and BTS order numbers
+- map Shopify order IDs to BTS order numbers
 
 --------------------------------------------------
 
 TRACKING LOOKUP
 
+Retrieve tracking information for stored BTS orders.
+
 Run:
 
-python3 bts_tracking_check.py
+python3 scripts/bts_tracking_check.py
 
-This retrieves tracking information for stored BTS orders.
+Later this can be used to update Shopify fulfillments.
+
+--------------------------------------------------
+
+DEMO SCRIPT
+
+Run a full demo of the catalog pipeline:
+
+./scripts/demo_sync.sh
+
+The demo performs:
+
+1. Shopify product sync
+2. Shopify inventory sync
+3. Product content application
 
 --------------------------------------------------
 
@@ -208,7 +279,7 @@ IMPORTANT BTS LIMITATION
 
 BTS does not provide a sandbox environment.
 
-Recommended safe testing approach:
+Safe testing approach:
 
 - use payment_method=banktransfer
 - order remains in Pending Payment
@@ -216,33 +287,29 @@ Recommended safe testing approach:
 
 --------------------------------------------------
 
-CURRENT STATUS
+CURRENT DEVELOPMENT APPROACH
 
-Working:
+The integration is being built in phases.
 
-- catalog fetch
-- stock fetch
-- shipping lookup
-- order payload generation
-- optional real order creation
-- local order deduplication
-- tracking lookup
+Phase 1  
+BTS catalog + stock integration
 
-Pending:
+Phase 2  
+Shopify product + inventory sync
 
-- Shopify Admin API access
-- Shopify product sync
-- Shopify order ingestion
-- Shopify fulfillment tracking updates
+Phase 3  
+Content generation and management
+
+Phase 4 (next)  
+Shopify order → BTS automation  
+BTS tracking → Shopify fulfillment updates
 
 --------------------------------------------------
 
-NOTES
+SUMMARY
 
-This project focuses on validating the BTS integration first before connecting it to Shopify.
+The repository currently provides a working BTS → Shopify catalog pipeline.
 
-Safe development approach:
+Products, prices and stock can already be synchronized.
 
-- freely use GET endpoints
-- keep order creation behind the --commit flag
-- avoid real BTS orders unless necessary
+Order automation and fulfillment tracking are planned as the next phase once the catalog setup is finalized.
